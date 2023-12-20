@@ -8,7 +8,8 @@ More information on CARP refers to:
 - [Superior ab initio identification, annotation and characterisation of TEs and segmental duplications from genome assemblies](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0193588)
 - [CARP manual](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf) (Updated in 2018-10-26)
 
-
+Singularity is employed as a container that suits both HPC and local. 
+AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 
 ## Contributing
 
