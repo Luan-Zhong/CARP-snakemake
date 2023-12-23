@@ -15,6 +15,11 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 
 
 ## Instructions
-
+### Server
+```bash
+# 2023-12-23 Complete Krishna code block
+$ cd /your/Snakefile/location/
+$ snakemake --cores 8 output/1_krishna/scalefold17.gff
+```
 
 ## Developing log
