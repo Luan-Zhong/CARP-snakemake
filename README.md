@@ -1,5 +1,5 @@
 # CARP-snakemake
-![](https://img.shields.io/badge/BASH-282F37) ![](https://img.shields.io/badge/snakemake-038F71) ![](https://img.shields.io/badge/conda-40B12E)  ![](https://img.shields.io/badge/docker-0291E7)
+![](https://img.shields.io/badge/BASH-282F37) ![](https://img.shields.io/badge/snakemake-038F71) ![](https://img.shields.io/badge/Singularity-40B12E)  ![](https://img.shields.io/badge/docker-0291E7)
 ## Description
 CARP (Comprehensive ab initio Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
 Reducing the painful process like installing dependencies and managing the computational resources.
