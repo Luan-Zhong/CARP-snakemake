@@ -29,7 +29,7 @@ rule krishna:
 rule igor:
     input: 'output/1_krishna/{prefix}.gff'
     output: 'output/2_igor/{prefix}_krishna.json'
-    params: 
+    params:
         igor_output_dir = 'output/2_igor/'
     shell: 
         '''
