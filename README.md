@@ -22,4 +22,10 @@ $ cd /your/Snakefile/location/
 $ snakemake --cores 8 output/1_krishna/scalefold17.gff
 ```
 
+```bash
+# 2023-12-24 Complete igor code block
+$ cd /your/Snakefile/location/
+$ snakemake --cores 8 output/2_igor/scalefold17_krishna.json
+```
+
 ## Developing log
