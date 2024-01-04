@@ -28,4 +28,10 @@ $ cd /your/Snakefile/location/
 $ snakemake --cores 8 output/2_igor/scalefold17_krishna.json
 ```
 
+```
+# 2024-1-04 gffer code block
+$ cd /your/Snakefile/location/
+$ snakemake --cores 8 output/3_seqer/scalefold17_krishna.igor.gff
+```
+
 ## Developing log
