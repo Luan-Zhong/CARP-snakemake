@@ -40,4 +40,11 @@ $ snakemake --cores 8 output/4_rep_anno/scalefold17_ConsensusSequences.fa
 # Update the existing code block output files directory
 ```
 
+```bash
+# 2024-01-05 repeat_annotation block
+$ snakemake --cores 8 output/4_rep_anno/scalefold17_ConsensusSequences.fa
+# 2024-01-15 Finished
+```
+
+
 ## Developing log
