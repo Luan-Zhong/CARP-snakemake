@@ -51,48 +51,45 @@ rule igor:
 # Use seqer to generate consensus sequences from genome intervals        
 rule seqer:
     input: "output/2_igor/{prefix}_krishna.json"
-    output: "output/3_seqer/{prefix}_krishna.igor.gff"
+    output: 
+            gff = "output/3_seqer/{prefix}_krishna.igor.gff",
+            consensus_dir = directory("output/3_seqer/consensus/{prefix}/")
     params:
         seqer_output_dir = "output/3_seqer/"
     shell:
         """
-        mkdir -p {params.seqer_output_dir}
+        mkdir -p {output.consensus_dir}
         # Use gffer convert JSON file to gff file
-        gffer < {input} > {params.seqer_output_dir}{wildcards.prefix}_krishna.igor.gff
+        gffer < {input} > {output.gff}
         cat fa/{wildcards.prefix}.fa >> {params.seqer_output_dir}{wildcards.prefix}.mfa
         seqer -aligner=muscle \
-        -dir=output/3_seqer/consensus/ \
+        -dir={output.consensus_dir} \
         -fasta=true \
         -maxFam=100 \
         -subsample=true \
         -minLen=0.95 \
         -threads=12 \
-        -ref={params.seqer_output_dir}{wildcards.prefix}.mfa {output}
+        -ref={params.seqer_output_dir}{wildcards.prefix}.mfa {output.gff}
         """
 
 rule repeat_annotation:
-    input: 
-        'output/3_seqer/consensus/.fa'
+    input:
+        # Find all the .fq files by snakemake glob_wildcards function
+        consensus_dir = rules.seqer.output.consensus_dir
     output: 
-        'output/4_rep_anno/ConsensusSequences.fa'
+        'output/4_rep_anno/{prefix}_ConsensusSequences.fa'
     params:
         rep_anno_output_dir = 'output/4_rep_anno/',
         rep_lib = 'libraries/replib/'
     shell:
         """
         mkdir -p {params.rep_anno_output_dir}
-        # Check if .fq file exist
-        if [ -f 'output/3_seqer/consensus/your_file.fq' ]; then
-            echo '### fq file exists ###'
-        fi
-        cat 'done' > {output}
-        # Combine .fq files
-        cat output/3_seqer/consensus/*.fq > {output}
-        # Use censor to annotate consensus sequences with the Repbase library
+        # Find all the .fq files combine as ConsensusSequences.fa
+        cat {input.consensus_dir}/[!.]*.fq > {output}
         censor -bprm cpus=8 \
         -lib {params.rep_lib}Vertebrates.fa \
         -lib {params.rep_lib}our_known_reps_20130520.fasta \
         {output}
-        # Move censor log file and related files to repeat annotation folder
-        mv censor.*.log {wildcards.prefix}_ConsensusSequences.fa.* {params.rep_anno_output_dir}
+        mv censor*.log {params.rep_anno_output_dir}
+        mv {wildcards.prefix}_ConsensusSequences.fa.* {params.rep_anno_output_dir}
         """
