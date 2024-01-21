@@ -104,3 +104,5 @@ If you using CARP snakemake pipeline, please cite:
 > **Superior *ab initio* identification, annotation and characterisation of TEs and segmental duplications from genome assemblies**<br/>
 > Lu Zeng, R. Daniel Kortschak, Joy M. Raison, Terry Bertozzi, David L. Adelson. *PLOS ONE*. 2018. <br/>
 > [doi:https://doi.org/10.1371/journal.pone.0193588](https://doi.org/10.1371/journal.pone.0193588) [[pdf](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0193588&type=printable)]
+> [[github page](https://github.com/carp-te/carp-documentation)]
+> [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
