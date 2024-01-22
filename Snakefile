@@ -93,3 +93,20 @@ rule repeat_annotation:
         mv censor*.log {params.rep_anno_output_dir}
         mv {wildcards.prefix}_ConsensusSequences.fa.* {params.rep_anno_output_dir}
         """
+
+rule classify_consensus_sequences:
+    input: 
+            consensus_dir = rules.repeat_annotation.output
+    output: '{prefix}_ClassifyConsensusSequences.java'
+    params:
+        classify_consensus_output_dir = 'output/5_results_classify/'
+    shell:
+        """
+        mkdir -p {params.classify_consensus_output_dir}
+        # Instead editing ClassifyConsensusSequences.java for ecah run, will parameterize the javascript
+        sed 's|public class ClassifyConsensusSequences {{|public class {wildcards.prefix}_ClassifyConsensusSequences {{|' lib/ClassifyConsensusSequences_templet.java | 
+        sed 's|private static String cFile = bDir + "output/4_rep_anno/ConsensusSequences.fa";|private static String cFile = bDir + "output/4_rep_anno/{wildcards.prefix}_ConsensusSequences.fa";|' |
+        sed 's|private static String map = bDir + "output/4_rep_anno/ConsensusSequences.fa.map";|private static String map = bDir + "output/4_rep_anno/{wildcards.prefix}_ConsensusSequences.fa.map";|' > {output}
+        javac {output}
+        java {wildcards.prefix}_ClassifyConsensusSequences
+        """
