@@ -1,5 +1,8 @@
 # CARP-snakemake
-![](https://img.shields.io/badge/BASH-282F37) ![](https://img.shields.io/badge/snakemake-038F71) ![](https://img.shields.io/badge/Singularity-40B12E)  ![](https://img.shields.io/badge/docker-0291E7)
+
+<img src="https://github.com/Luan-Zhong/CARP-snakemake/assets/37817639/55e9023b-45a3-487a-ac40-57cd4abb9ffa" width="400">
+
+
 
 CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
 Reducing the painful process like installing dependencies and managing the computational resources.
@@ -26,7 +29,7 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 - `fasta` file 
 
 ### Process and tools
-- Pairwise alignment between human genome sequence
+- Pairwise alignment
   - [krishna](https://github.com/biogo/examples/tree/master/krishna)
   - [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix)
   - [bundle](https://github.com/biogo/examples/tree/master/bundle): split genome sequence files into smaller files
@@ -41,8 +44,17 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 - Classify consensus sequences
   - [ClassifyConsensusSequences.java](https://github.com/carp-te/carp-documentation/blob/master/code/ClassifyConsensusSequences.java)
 - Filter sequences
-  - [uniprot protein dataset](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
+  [AB-BLAST](https://blast.advbiocomp.com/)
+  - Identify potential protein sequences
+    - [uniprot protein dataset](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
+    
+  - Identify GB_TE sequences
+  - Identify potential retrovirus sequences
+
+  
   - [EDirect](https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Getting_Started)
+  - [260118_GB_TE.fa](esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile element or retroelement or polyprotein or retrovirus or (group-specific antigen gag) or polymerase (pol)" | efetch -format fasta > 260118_GB_TE.fa)
+  - [Retrovirus datasets](https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=11632)
 
 
 ## Quick start
