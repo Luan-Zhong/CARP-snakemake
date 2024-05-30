@@ -74,6 +74,8 @@ $ snakemake --use-conda --cores 8
 # 2023-12-23 Complete Krishna block
 $ cd /your/Snakefile/location/
 $ snakemake --cores 8 output/1_krishna/scalefold17.gff
+# with singularity
+$ snakemake --cores 8 --use-singularity output/scalefold17.gff
 ```
 
 ```bash
