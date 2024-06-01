@@ -95,6 +95,16 @@ $ snakemake --cores 8 output/3_seqer/scalefold17_krishna.igor.gff
 $ snakemake --cores 8 output/4_rep_anno/scalefold17_ConsensusSequences.fa
 # 2024-01-15 Finished
 ```
+
+### Singularity
+
+```bash
+# server
+$ snakemake --use-singularity --cores 4
+# OR
+$ snakemake --snakefile <filename> --use-singularity --cores 4
+```
+
 ## Benchmarks
 
 Data from CARP manual.
