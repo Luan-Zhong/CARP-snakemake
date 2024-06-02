@@ -96,12 +96,17 @@ $ snakemake --cores 8 output/4_rep_anno/scalefold17_ConsensusSequences.fa
 # 2024-01-15 Finished
 ```
 
-### Singularity
+### Singularity + snakemake
 
 ```bash
 # server
+# Active your snakemake conda env
+$ conda activate <snkm_env>
+# Dry run: Test snakemake pipeline before your actual run
+$ snakemake --use-singularity --cores 4 -n
+# Actual run
 $ snakemake --use-singularity --cores 4
-# OR
+# OR your snakefile is not called Snakefile
 $ snakemake --snakefile <filename> --use-singularity --cores 4
 ```
 
