@@ -2,7 +2,7 @@
 # This is the snakemake prpeline for CARP
 # 2023-05-30
 # Version: 2.0
-# a) Use singularity container lib/CARP_01.sif
+# a) Use singularity container lib/CARP_02_w_py.sif
 # b) Now, Outputs all in "output/" directory, see global variables OUTDIR
 
 # Understand snakefile
@@ -34,11 +34,12 @@ MAX_THREADS = 4
 
 
 onstart:
-    print("#################################\n#### Starting CARP... |Xx> ####\n#################################\n")
+    print("#################################\n#### Starting CARP... ><(((('>
+ ####\n#################################\n")
     shell("mkdir -p output")
 
 # Use singularity local contianer
-singularity: "lib/CARP_01.sif"
+singularity: "lib/CARP_03_w_py_bundle.sif"
 
 
 # Set output file inside expand function to run seleted step
@@ -61,12 +62,34 @@ singularity: "lib/CARP_01.sif"
 # "lib/ClassifyConsensusSequences.class",
 # "output/ClassifyConsensusSequences.log"
 
+# filter_sequences:
+# "output/notKnown.fa.spwb",
+# "output/notKnown.fa.tewb",
+# "output/notKnown.fa.ervwb",
+
 rule all:
     input:
         expand("output/{prefix}_krishna.igor.gff", prefix=preFix),
+        # filter_sequences:
         "output/notKnown.fa.spwb",
+        "output/notKnown.fa.spwb.gff",
         "output/notKnown.fa.tewb",
+        "output/notKnown.fa.tewb.gff",
         "output/notKnown.fa.ervwb",
+        "output/notKnown.fa.ervwb.gff",
+        # get_protein_info_from_consensus
+        "output/protein.txt",
+        "output/notKnownNotProtein.fa",
+        "output/GetProteins.log",
+        # check_ssr
+        "output/notKnownNotProtein.phobos",
+        # identify_ssr_from_phobos_output
+        "output/IdentifySSRs.log",
+        "output/GB_TE.fa",
+        # generate_annotated_repeat_lib
+        "output/library/Denovo_TE_Library.fasta",
+        "output/GenerateAnnotatedLibrary.log",
+        "lib/GenerateAnnotatedLibrary.class"
 
 
 
@@ -74,7 +97,6 @@ rule all:
 ################
 # Rules Proper #
 ################
-
 # Pairwise alignment with krishna
 rule krishna:
     input: 
@@ -88,7 +110,7 @@ rule krishna:
         filtlen = 400
     shell:
         """
-        echo "====================== Krishna Start... ======================"
+        echo "====================== Krishna: Performing pairwise alignment... ======================"
         matrix -threads={params.thrd} -krishnaflags="-tmp={params.out_dir} -threads={params.thrd} -log -filtid={params.filtid} -filtlen={params.filtlen} -target={input}" {input}
         mv {wildcards.prefix}.gff {params.out_dir}
         mv krishna-*.log {params.out_dir}
@@ -105,7 +127,7 @@ rule igor:
         out_dir = OUTDIR
     shell: 
         """
-        echo "====================== igor Start... ======================"
+        echo "====================== igor: Grouping repeat families into JSON file... ======================"
         find {params.out_dir} \
             -maxdepth 1 \
             -name '[!.]*.gff' \
@@ -117,7 +139,7 @@ rule igor:
         echo "====================== igor completed! ======================"
         """
 
-# Use seqer to generate consensus sequences from genome intervals        
+# Use seqer to generate consensus sequences from genome intervals
 rule seqer:
     input: 
         igor_out = rules.igor.output.json,
@@ -130,14 +152,14 @@ rule seqer:
         out_dir = OUTDIR,
         maxFam = 100,
         minLen = 0.95,
-        thrd = 4,
+        thrd = MAX_THREADS,
     shell:
         """
-        echo "====================== Seqer Start... ======================"
+        echo "================ seqer: Generating consensus sequences from genome intervals... ================"
         gffer < {input.igor_out} > {output.gff}
         cat {input.genome} > {output.cat}
         seqer -aligner=muscle -dir={params.out_dir}/consensus -fasta=true -maxFam={params.maxFam} -subsample=true -minLen={params.minLen} -threads={params.thrd} -ref={output.cat} {output.gff}
-        echo "====================== Seqer complete! ======================"
+        echo "====================== seqer completed! ======================"
         echo "====================== Combining consensus... ======================"
         find {params.out_dir}/consensus -maxdepth 1 -name '[!.]*.fq' -print0 | xargs -r0 cat > {output.consensus}
         echo "====================== Consensus combined! ======================"
@@ -216,20 +238,106 @@ rule filter_sequences:
         OUTDIR + "notKnown.fa"
     output:
         protein = OUTDIR + "notKnown.fa.spwb",
+        protein_gff = OUTDIR + "notKnown.fa.spwb.gff",
         gb_te = OUTDIR + "notKnown.fa.tewb",
-        retrovirus = OUTDIR + "notKnown.fa.ervwb"
+        gb_te_gff = OUTDIR + "notKnown.fa.tewb.gff",
+        retrovirus = OUTDIR + "notKnown.fa.ervwb",
+        retrovirus_gff = OUTDIR + "notKnown.fa.ervwb.gff",
     params:
         out_dir = OUTDIR,
         protein_lib = "lib/sprot/uniprot_sprot.fasta",
         gb_te_lib = "lib/BlastDB/GB_TE.new",
         retrovirus_lib = "lib/BlastDB/all_retrovirus",
-        cpus = 4
+        cpus = 4,
+        script = "lib/wublastx2gff.py"
     shell:
         """
-        echo "====================== Identifying notknown from protein database... ======================"
+        echo "====================== Identifying notknowns from protein database... ======================"
         blastx {params.protein_lib} {input} -gspmax=1 -E 0.00001 -B 1 -V 1 -cpus={params.cpus} > {output.protein}
-        echo "====================== Identifying notknown from GB_TE database... ======================"
+        python {params.script} {output.protein} > {output.protein_gff}
+        echo "====================== Identifying notknowns from GB_TE database... ======================"
         blastx {params.gb_te_lib} {input} -gspmax=1 -E 0.00001 -B 1 -V 1 -cpus={params.cpus} > {output.gb_te}
-        echo "====================== Identifying notknown from Retrovirus database... ======================"
+        python {params.script} {output.gb_te} > {output.gb_te_gff}
+        echo "====================== Identifying notknowns from retrovirus database... ======================"
         tblastx {params.retrovirus_lib} {input} -gspmax=1 -E 0.00001 -B 1 -V 1 -cpus={params.cpus} > {output.retrovirus}
+        python {params.script} {output.retrovirus} > {output.retrovirus_gff}
+        echo "====================== Sequence filtering completed! ========================"
+        """
+
+rule get_protein_info_from_consensus:
+    input:
+        "lib/GetProteins.java"
+    output:
+        OUTDIR + "protein.txt",
+        OUTDIR + "notKnownNotProtein.fa",
+        "lib/GetProteins.class",
+        OUTDIR + "GetProteins.log"
+    params:
+        out_dir = OUTDIR
+    shell:
+        """
+        echo "==================== Retrieving protein information from consensus sequences... ===================="
+        cd lib
+        javac GetProteins.java
+        java GetProteins > GetProteins.log 2>&1
+        cd ..
+        mv lib/GetProteins.log {params.out_dir}
+        echo "====================== Protein information retrieved! ======================"
+        """
+
+rule check_ssr:
+    input:
+        OUTDIR + "notKnownNotProtein.fa"
+    output:
+        OUTDIR + "notKnownNotProtein.phobos"
+    shell:
+        """
+        echo "====================== Check for simple sequence repeats... ======================"
+        phobos-linux-gcc4.1.2 -r 7 --outputFormat 0 --printRepeatSeqMode 0 {input} > {output}
+        echo "====================== Simple sequence repeats check completed! ======================"
+        """
+
+rule identify_ssr_from_phobos_output:
+    input:
+        script = "lib/IdentifySSRs.java",
+        gbte_fa = "lib/GB_TE.2022-07-14.fa"
+    output:
+        ssr_log = OUTDIR + "IdentifySSRs.log",
+        gbte_out = OUTDIR + "GB_TE.fa"
+    params:
+        out_dir = OUTDIR
+    shell:
+        """
+        echo "================== Identifying SSRs sequences from Phobos output... =================="
+        cd lib
+        javac IdentifySSRs.java
+        java IdentifySSRs > IdentifySSRs.log 2>&1
+        cd ..
+        mv lib/IdentifySSRs.log {params.out_dir}
+        echo "============== SSRs sequences identification from Phobos output completed! =============="
+        echo "=== GB_TE and retrovirus data are downloaded by using EDirect. Convert the data format before generating the annotated repeat library... ==="
+        perl -pe "s/^>/>gi|GBTE|sp|/g" {input.gbte_fa} > {output.gbte_out}
+        sed -i 's/ /| /' {output.gbte_out}
+        echo "================== Data format conversion completed! =================="
+        """
+
+rule generate_annotated_repeat_lib:
+    input:
+        "lib/GenerateAnnotatedLibrary.java"
+    output:
+        OUTDIR + "library/Denovo_TE_Library.fasta",
+        OUTDIR + "GenerateAnnotatedLibrary.log",
+        "lib/GenerateAnnotatedLibrary.class"
+    params:
+        out_dir = OUTDIR
+    shell:
+        """
+        "================== Finally, generating annotated repeat library... =================="
+        mkdir -p output/library
+        cd lib
+        javac GenerateAnnotatedLibrary.java
+        java GenerateAnnotatedLibrary > GenerateAnnotatedLibrary.log 2>&1
+        cd ..
+        mv lib/GenerateAnnotatedLibrary.log {params.out_dir}
+        "================== CARP has completed the annotation. Check your results at output/library/Denovo_TE_Library.fasta! =================="
         """
