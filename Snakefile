@@ -34,8 +34,7 @@ MAX_THREADS = 4
 
 
 onstart:
-    print("#################################\n#### Starting CARP... ><(((('>
- ####\n#################################\n")
+    print("#################################\n#### Starting CARP... ><(((('> ####\n#################################\n")
     shell("mkdir -p output")
 
 # Use singularity local contianer
