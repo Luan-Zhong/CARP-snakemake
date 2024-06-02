@@ -39,7 +39,7 @@ onstart:
     shell("mkdir -p output")
 
 # Use singularity local contianer
-singularity: "lib/CARP_03_w_py_bundle.sif"
+singularity: "lib/CARP_02_w_py.sif"
 
 
 # Set output file inside expand function to run seleted step
