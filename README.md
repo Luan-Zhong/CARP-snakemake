@@ -108,6 +108,8 @@ $ snakemake --use-singularity --cores 4 -n
 $ snakemake --use-singularity --cores 4
 # OR your snakefile is not called Snakefile
 $ snakemake --snakefile <filename> --use-singularity --cores 4
+# With screen and write log snkm.log
+$ snakemake --use-singularity --cores 4 > snkm240602.log 2>&1
 ```
 
 ## Benchmarks
