@@ -105,7 +105,7 @@ rule krishna:
     params:
         out_dir = OUTDIR,
         thrd = MAX_THREADS,
-        filtid = 0.99,
+        filtid = 0.94,
         filtlen = 400
     shell:
         """
