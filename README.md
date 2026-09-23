@@ -12,7 +12,7 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 
 
 ## Pipeline overview
-### What's new here?
+### What's new?
 * One-step dependency installation with a Singularity container
 * Support for resuming from checkpoints
 * HPC/SLURM support with no root privileges required
@@ -52,7 +52,7 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 ## Installation
 ### For Linux server
 #### Setup conda environment
-Prerequesite: conda is installed
+Prerequesite: [conda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
 $ conda create -n snakemake -c bioconda snakemake=8.14.0
 $ conda activate snakemake
