@@ -6,6 +6,13 @@
 
 CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
 
+## Citation
+If you using CARP snakemake pipeline, please cite:
+> **Superior *ab initio* identification, annotation and characterisation of TEs and segmental duplications from genome assemblies**<br/>
+> Lu Zeng, R. Daniel Kortschak, Joy M. Raison, Terry Bertozzi, David L. Adelson. *PLOS ONE*. 2018. <br/>
+> [doi:https://doi.org/10.1371/journal.pone.0193588](https://doi.org/10.1371/journal.pone.0193588) [[pdf](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0193588&type=printable)]
+> [[github page](https://github.com/carp-te/carp-documentation)]
+> [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
 
 
 ## Pipeline overview
@@ -239,17 +246,3 @@ Analysis runs on a machine with 512GB RAM, running Red Hat Linux.
 | Platypus           | 8               | 2.0G           | ~99                      | 191:34                | 10:16                  | 162M                     | 17:34                         | 115                 | <01:00                  |
 | Echidna            | 8               | 1.9G           | 360                      | 12:43                 | 9:02                   | 59M                      | 18:40                         | 105                 | 01:54                   |
 
-
-More information on CARP refers to:
-- [Superior ab initio identification, annotation and characterisation of TEs and segmental duplications from genome assemblies](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0193588)
-- [CARP manual](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf) (Updated in 2018-10-26)
-- [CARP github page](https://github.com/carp-te/carp-documentation)
-
-
-## Citation
-If you using CARP snakemake pipeline, please cite:
-> **Superior *ab initio* identification, annotation and characterisation of TEs and segmental duplications from genome assemblies**<br/>
-> Lu Zeng, R. Daniel Kortschak, Joy M. Raison, Terry Bertozzi, David L. Adelson. *PLOS ONE*. 2018. <br/>
-> [doi:https://doi.org/10.1371/journal.pone.0193588](https://doi.org/10.1371/journal.pone.0193588) [[pdf](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0193588&type=printable)]
-> [[github page](https://github.com/carp-te/carp-documentation)]
-> [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
