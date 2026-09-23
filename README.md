@@ -7,24 +7,17 @@
 CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
 Reducing the painful process like installing dependencies and managing the computational resources.
 
-## Advantages
-- One command for repeat analysis
-- No painful steps in dependencies
-- 
-
-## Description
-
-
-More information on CARP refers to:
-- [Superior ab initio identification, annotation and characterisation of TEs and segmental duplications from genome assemblies](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0193588)
-- [CARP manual](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf) (Updated in 2018-10-26)
-- [CARP github page](https://github.com/carp-te/carp-documentation)
-
 Singularity is employed as a container that suits both HPC and local. 
 AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 
 
 ## Pipeline overview
+### What's new here?
+* One-step dependency installation with a Singularity container
+* Support for resuming from checkpoints
+* HPC/SLURM support with no root privileges required
+* [TODO]Visualized reports for easy interpretation
+
 ### Minimal input
 - `fasta` file 
 
@@ -56,63 +49,178 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
   - [260118_GB_TE.fa](esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile element or retroelement or polyprotein or retrovirus or (group-specific antigen gag) or polymerase (pol)" | efetch -format fasta > 260118_GB_TE.fa)
   - [Retrovirus datasets](https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=11632)
 
-
-## Quick start
-### Set up conda environment
+## Installation
+### For Linux server
+#### Setup conda environment
+Prerequesite: conda is installed
 ```bash
-$ cd /your/Snakefile/location/
+$ conda create -n snakemake -c bioconda snakemake=8.14.0
+$ conda activate snakemake
+$ snakemake --version
 ```
-### Example dataset
+NB: If snakemake version is not shown, please double check your conda installation and snakemake download
 
-### Running the pipeline
+#### Clone repo
 ```bash
-$ snakemake --use-conda --cores 8
+$ cd <whereever/you/want/to/put>
+$ git clone https://github.com/Luan-Zhong/CARP-snakemake
+$ cd CARP-snakemake
 ```
-
-### Server
-```bash
-# 2023-12-23 Complete Krishna block
-$ cd /your/Snakefile/location/
-$ snakemake --cores 8 output/1_krishna/scalefold17.gff
-# with singularity
-$ snakemake --cores 8 --use-singularity output/scalefold17.gff
-```
+#### Pull container under the `CARP-snakemake/lib`
 
 ```bash
-# 2023-12-24 Complete igor block
-$ cd /your/Snakefile/location/
-$ snakemake --cores 8 output/2_igor/scalefold17_krishna.json
+$ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
+$ mv <myproject.sif> lib
+```
+
+#### Copy your input fasta data under `CARP-snakemake/data`
+
+```bash
+$ cp <your/data/absolute/path> data
+# Make sure data successfully copies and in right size
+$ ls -lah data
+```
+
+#### Dry run whole pipeline to make sure everything are prepared
+```bash
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
 ```
 
 ```bash
-# 2024-01-04 gffer code block
-$ cd /your/Snakefile/location/
-$ snakemake --cores 8 output/3_seqer/scalefold17_krishna.igor.gff
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> -- output/test_input/02_igor/test_input_krishna.gff
 ```
+NB: If your input data is `test_input.fa`, `preFix=<your_input_data_prefix>` will be `preFix=test_input`
+
+#### Actual run
+```bash
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
+```
+
+#### Where is the result?
+Your result will be under `CARP-snakemake/output`
+
+#### Example: run with example dataset
+Dry run
+```bash
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
+```
+You will expect
+```bash
+
+```
+Actual run
 
 ```bash
-# 2024-01-05 repeat_annotation block
-$ snakemake --cores 8 output/4_rep_anno/scalefold17_ConsensusSequences.fa
-# 2024-01-15 Finished
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=test_input
+```
+You will expect output structure
+```bash
+.
+└── test_input
+    ├── 00_bundle
+    │   ├── test_input.fa-0.fa
+    │   └── test_input.fa-1.fa
+    ├── 01_krishna
+    │   ├── krishna-20260922153925-Tue-345216.log
+    │   ├── krishna-20260922153925-Tue-345217.log
+    │   ├── krishna-20260922153925-Tue-345219.log
+    │   ├── test_input.fa-0.gff
+    │   ├── test_input.fa-0_test_input.fa-1.gff
+    │   └── test_input.fa-1.gff
+    ├── 02_igor
+    │   ├── test_input_krishna.gff
+    │   └── test_input_krishna.json
+    ├── 03_seqer
+    │   ├── consensus
+    │   │   ├── family000000_consensus.fq
+    │   │   ├── family000000.mfa
+    │   │   ├── family000001_consensus.fq
+    │   │   ├── family000001.mfa
+    │   │   ├── family......_consensus.fq
+    │   │   └── family.......mfa
+    │   ├── test_input_krishna.igor.gff
+    │   ├── test_input.mfa
+    │   └── test_input_temp_ConsensusSequences.fa
+    ├── 04_finalize_consensus
+    │   ├── test_input_ConsensusSequences.fa
+    │   └── test_input_ConsensusSequences.fa.idx
+    ├── 05_repeats_in_repbase
+    │   ├── censor.350970.log
+    │   ├── censor.351400.log
+    │   ├── censor.352206.log
+    │   ├── censor.355258.log
+    │   ├── test_input_ConsensusSequences.fa.aln
+    │   ├── test_input_ConsensusSequences.fa.found
+    │   ├── test_input_ConsensusSequences.fa.map
+    │   └── test_input_ConsensusSequences.fa.masked
+    ├── 06_classify_consensus
+    │   ├── test_input_check.txt
+    │   ├── test_input_ClassifyConsensusSequences.log
+    │   ├── test_input_known.txt
+    │   ├── test_input_notKnown.fa
+    │   ├── test_input_notKnown.fa.gff
+    │   └── test_input_partial.txt
+    ├── 07_filter_sequences
+    │   ├── test_input_notKnown.fa.ervwb
+    │   ├── test_input_notKnown.fa.ervwb.gff
+    │   ├── test_input_notKnown.fa.spwb
+    │   ├── test_input_notKnown.fa.spwb.gff
+    │   ├── test_input_notKnown.fa.tewb
+    │   └── test_input_notKnown.fa.tewb.gff
+    ├── 08_get_protein_info
+    │   ├── test_input_GetProteins.log
+    │   ├── test_input_notKnownNotProtein.fa
+    │   └── test_input_protein.txt
+    ├── 09_check_ssr
+    │   └── test_input_notKnownNotProtein.phobos
+    ├── 10_identify_ssr
+    │   ├── test_input_GB_TE.fa
+    │   ├── test_input_IdentifySSRs.log
+    │   ├── test_input_notKnownNotProteinNotSSR.fa
+    │   └── test_input_SSR.txt
+    └── 11_generate_annotated_repeat_lib
+        ├── test_input_Denovo_TE_Library.fasta
+        └── test_input_GenerateAnnotatedLibrary.log
 ```
 
-### Singularity + snakemake
+### For HPC slurm
+#### Setup conda environment in HPC home directory
+Prerequesite: conda is installed
+```bash
+$ conda create -n snakemake -c bioconda snakemake=8.14.0
+$ conda activate snakemake
+$ snakemake --version
+```
+NB: If snakemake version is not shown, please double check your conda installation and snakemake download
+
+#### Clone repo
+```bash
+$ cd <whereever/you/want/to/put>
+$ git clone https://github.com/Luan-Zhong/CARP-snakemake
+$ cd CARP-snakemake
+```
+#### Pull container under the `CARP-snakemake/lib`
 
 ```bash
-# server
-# Active your snakemake conda env
-$ conda activate <snkm_env>
-# Dry run: Test snakemake pipeline before your actual run
-$ snakemake --use-singularity --cores 4 -n
-# Actual run
-$ snakemake --use-singularity --cores 4
-# OR your snakefile is not called Snakefile
-$ snakemake --snakefile <filename> --use-singularity --cores 4
-# With screen and write log snkm.log
-$ snakemake --use-singularity --cores 4 > snkm240602.log 2>&1
+$ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
+$ mv <myproject.sif> lib
 ```
 
-## Benchmarks
+#### Copy your input fasta data under `CARP-snakemake/data`
+
+```bash
+$ cp <your/data/absolute/path> ./data
+# Make sure data successfully copies and in right size
+$ ls -lah ./data
+```
+#### Edit your slurm script
+```
+  
+
+
+## Time and Benchmarks
+
+Depends on the genome size and repetitive, large genome and repeatitive genome (e.g.:T2T) will take longer time.
 
 Data from CARP manual.
 Analysis runs on a machine with 512GB RAM, running Red Hat Linux.
@@ -128,6 +236,11 @@ Analysis runs on a machine with 512GB RAM, running Red Hat Linux.
 | Platypus           | 8               | 2.0G           | ~99                      | 191:34                | 10:16                  | 162M                     | 17:34                         | 115                 | <01:00                  |
 | Echidna            | 8               | 1.9G           | 360                      | 12:43                 | 9:02                   | 59M                      | 18:40                         | 105                 | 01:54                   |
 
+
+More information on CARP refers to:
+- [Superior ab initio identification, annotation and characterisation of TEs and segmental duplications from genome assemblies](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0193588)
+- [CARP manual](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf) (Updated in 2018-10-26)
+- [CARP github page](https://github.com/carp-te/carp-documentation)
 
 
 ## Citation
