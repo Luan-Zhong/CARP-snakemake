@@ -1,14 +1,11 @@
 # CARP-snakemake
-
-<img src="https://github.com/Luan-Zhong/CARP-snakemake/assets/37817639/55e9023b-45a3-487a-ac40-57cd4abb9ffa" width="400">
+<img src="https://github.com/Luan-Zhong/CARP-snakemake/assets/37817639/55e9023b-45a3-487a-ac40-57cd4abb9ffa" width="200">
+<br/>
 
 
 
 CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
-Reducing the painful process like installing dependencies and managing the computational resources.
 
-Singularity is employed as a container that suits both HPC and local. 
-AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 
 
 ## Pipeline overview
@@ -18,10 +15,16 @@ AB-BLAST replaces the WU-BLAST because it is the updated version of WU-BLAST.
 * HPC/SLURM support with no root privileges required
 * [TODO]Visualized reports for easy interpretation
 
+### Workflow structure
+<img width="352" height="820" alt="carp_snkm" src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408" />
+
 ### Minimal input
 - `fasta` file 
 
 ### Process and tools
+
+
+
 - Pairwise alignment
   - [krishna](https://github.com/biogo/examples/tree/master/krishna)
   - [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix)
@@ -58,7 +61,7 @@ $ conda create -n snakemake -c bioconda snakemake=8.14.0
 $ conda activate snakemake
 $ snakemake --version
 ```
-NB: If snakemake version is not shown, please double check your conda installation and snakemake download
+NB: `--version` should show 8.14.0 snakemake version is not shown, please double check your conda installation and snakemake download
 
 #### Clone repo
 ```bash
