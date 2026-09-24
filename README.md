@@ -20,10 +20,13 @@ If you using CARP snakemake pipeline, please cite:
 * One-step dependency installation with a Singularity container
 * Support for resuming from checkpoints
 * HPC/SLURM support with no root privileges required
-* [TODO]Visualized reports for easy interpretation
+* Visualized html reports for easy interpretation, with interactive function
+<img width="1494" height="787" alt="CARP_snkm_report_screenshot" src="https://github.com/user-attachments/assets/6fa06a56-bffc-4215-bd4a-e78d400a724d" />
+
+
 
 ### Workflow structure
-<img width="352" height="820" alt="carp_snkm" src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408" />
+<img width="316" height="738" alt="carp_snkm" src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408" />
 
 ### Minimal input
 - `fasta` file 
@@ -64,11 +67,11 @@ If you using CARP snakemake pipeline, please cite:
 #### Setup conda environment
 Prerequesite: [conda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
-$ conda create -n snakemake -c bioconda snakemake=8.14.0
-$ conda activate snakemake
+$ conda create -n snkm9 -c bioconda snakemake=9.27.0
+$ conda activate snkm9
 $ snakemake --version
 ```
-NB: `--version` should show 8.14.0 snakemake version is not shown, please double check your conda installation and snakemake download
+NB: `--version` should show 9.27.0, if snakemake version is not shown, please double check your conda installation and snakemake download
 
 #### Clone repo
 ```bash
@@ -93,26 +96,28 @@ $ ls -lah data
 
 #### Dry run whole pipeline to make sure everything are prepared
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 -n --config preFix=<your_input_data_prefix>
 ```
 
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> -- output/test_input/02_igor/test_input_krishna.gff
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 --config preFix=<your_input_data_prefix> -- output/test_input/02_igor/test_input_krishna.gff
 ```
 NB: If your input data is `test_input.fa`, `preFix=<your_input_data_prefix>` will be `preFix=test_input`
 
 #### Actual run
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> --report output/<your_input_data_prefix>/snkm_statistics_report.html
 ```
 
 #### Where is the result?
-Your result will be under `CARP-snakemake/output`
+Your result will be under `CARP-snakemake/output/<your_input_data_prefix>`
 
 #### Example: run with example dataset
 Dry run
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds -n --config preFix=<your_input_data_prefix>
+$ cd CARP-snakemake
+$ cp <my/input_fasta/location>/test_input.fa data
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 -n --config preFix=test_input 
 ```
 You will expect
 ```bash
@@ -121,9 +126,9 @@ You will expect
 Actual run
 
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=test_input
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=test_input --report output/<your_input_data_prefix>/snkm_statistics_report.html
 ```
-You will expect output structure
+After process is completed, you will expect this output structure
 ```bash
 .
 └── test_input
@@ -197,8 +202,8 @@ You will expect output structure
 #### Setup conda environment in HPC home directory
 Prerequesite: conda is installed
 ```bash
-$ conda create -n snakemake -c bioconda snakemake=8.14.0
-$ conda activate snakemake
+$ conda create -n snkm9 -c bioconda snakemake=8.14.0
+$ conda activate snkm9
 $ snakemake --version
 ```
 NB: If snakemake version is not shown, please double check your conda installation and snakemake download
