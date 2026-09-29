@@ -106,7 +106,7 @@ NB: If your input data is `test_input.fa`, `preFix=<your_input_data_prefix>` wil
 
 #### Actual run
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> --report output/<your_input_data_prefix>/snkm_statistics_report.html
+$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> --report output/<<your_input_data_prefix>_snkm_statistics_report.html
 ```
 
 #### Where is the result?
