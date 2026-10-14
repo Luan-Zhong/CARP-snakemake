@@ -247,21 +247,21 @@ After process is completed, you will expect this output structure
 ### Tools and softwares
 | Step | Software/Scripts | Purpose |
 | --- | --- | ---|
-| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| Split genome sequence files into smaller files |
+| 00_bundle | `Go v1.22.3` </br> [bundle](https://github.com/biogo/examples/tree/master/bundle)| Split genome sequence files into smaller files |
 | 01_krishna | [krishna](https://github.com/biogo/examples/tree/master/krishna)  </br> [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix) | Pairwise alignment |
 | 02_igor |  [igor](https://github.com/biogo/examples/tree/master/igor) | Repeat family groupings into json file |
 | 03_seqer | [seqer](https://github.com/biogo/examples/tree/master/igor/seqer) | Generate consensus sequences from genome intervals |
 | 04_finalize_consensus | `bash cat` | Integrate consensus |
 | 05_repeats_in_repbase | `ins-fast` which is motified from [ins](https://github.com/kortschak/ins) | Consensus annotation with RepBase and our known repeat | 
-| 06_classify_consensus | ClassifyConsensusSequences_CARP_snkm.java | Generate annotation and grouping consensus into known, partial, and not known |
+| 06_classify_consensus | `java Temurin JDK 8u504-b01` </br> ClassifyConsensusSequences_CARP_snkm.java | Generate annotation and grouping consensus into known, partial, and not known |
 | 07_filter_sequences | ncbi-blast v2.15.0 `blastx` `tblastx` | Search not known consensus against the protien databases (Swiss-Prot, Genbank-TE protein database, retrovirus) | 
 | 08_get_protein_info | GetProteins_CARP_snkm.java | Generate annotation for consensus based on the protein search result |
 | 09_check_ssr | `phobos` v3.3.12 | Identify simple sequence repeat | 
 | 10_identify_ssr | IdentifySSRs_CARP_snkm.java | Generate annotation for consensus based on the phobos search result |
 | 11_generate_annotated_repeat_lib | GenerateAnnotatedLibrary_CARP_snkm.java | Integrate all the annotation result |
 | (optional) 12_genome_annotation | `ins-fast` </br> ins_json_to_map.py </br> ins_map_to_tbl.py| Annotate whole genome and generate summary table |
-| (optional) 13_plot_ins_map | plot_ins_map.R | Generate consensus annotation map | 
-| (optional) 14_make_report | make_report.py | Generate an interactive html file |
+| (optional) 13_plot_ins_map | `R 4.5.2` </br> `Gviz 1.54.0`plot_ins_map.R | Generate consensus annotation map | 
+| (optional) 14_make_report | `python3`make_report.py | Generate an interactive html file |
 
 
 ### For HPC slurm
