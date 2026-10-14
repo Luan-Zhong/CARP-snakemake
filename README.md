@@ -103,10 +103,6 @@ If you using CARP snakemake pipeline, please cite:
 | (optional) 14_make_report | make_report.py | Generate an interactive html file |
 
 
-    - [uniprot protein dataset](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
-  - [EDirect](https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Getting_Started)
-  - [260118_GB_TE.fa](esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile element or retroelement or polyprotein or retrovirus or (group-specific antigen gag) or polymerase (pol)" | efetch -format fasta > 260118_GB_TE.fa)
-  - [Retrovirus datasets](https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=11632)
 
 ## Requirement
 
