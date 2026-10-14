@@ -1,6 +1,6 @@
-# CARP-snakemake
 <img src="https://github.com/Luan-Zhong/CARP-snakemake/assets/37817639/55e9023b-45a3-487a-ac40-57cd4abb9ffa" width="200">
-<br/>
+
+# CARP-snakemake
 
 ## Overview
 - What is it and what does it do?
@@ -16,18 +16,45 @@
   Identify repeat consensus sequences from an input genome and classify them into repeat families
 
 ### What's new?
-* One-step dependency installation with a apptainer container
-* Support for resuming from checkpoints
-* HPC/SLURM support with no root privileges required
-* Replace `censor` with `INS`, which does not require `AB-BLAST` or `WU-BLAST`
-* Add a summary table showing the coverage of different repeat elements based on the RepBase classification system
-* Add optional integrate visualization script to visualized found repeat consensus annotation
-* Add optional interactive html reports for easier viewing of results
-  <img width="1494" height="787" alt="CARP_snkm_report_screenshot" src="https://github.com/user-attachments/assets/6fa06a56-bffc-4215-bd4a-e78d400a724d" />
+| Feature | Previous | CARP-snakemake |
+| --- | --- | ---|
+| Execution | Manual shell scripts | snakemake managed workflow |
+| Cofiguration | Parameters in scripts | Central yaml configuration |
+| Dependencies | Manual installation | Appatainer container |
+| Recovery | Manual rerun | Automatic reuse of completed outputs; only missing or failed steps are rerun |
+| HPC support | Manual adaption for cluster environment | HPC slurm support without requiring root privileges |
+| Repeat identification | `censor` requiring `AB-BLAST` or `WU-BLAST` | `INS-fast`, an update version of our in-house `INS` software |
+| Coverage summary | No integrated | Summary table of repeat-element coverage based on the RepBase classification system |
+| Visualization | No integrated | Optional visualization script for identified repeat consensus annotations |
+| Report | Static output files | Optional interactive html reports for easier result exploration |
 
 
+<p align="center">
+  <img
+    width="1494"
+    height="787"
+    alt="CARP_snkm_report_screenshot"
+    src="https://github.com/user-attachments/assets/6fa06a56-bffc-4215-bd4a-e78d400a724d"
+  >
+</p>
+
+<p align="left">
+  <strong>Figure 1. Example of CARP-snakemake produced report </strong>
+</p>
 
 
+<p align="center">
+  <img
+    width="3360"
+    height="1392"
+    alt="consensus_annotation_map"
+    src="https://github.com/user-attachments/assets/58a5c78d-6245-419d-9973-e0d5b132797f"
+  >
+</p>
+
+<p align="left">
+  <strong>Figure 2. Example of consensus annotation map </strong>
+</p>
 
 
 ## Citation
@@ -41,12 +68,25 @@ If you using CARP snakemake pipeline, please cite:
 ## Workflow overview
 
 ### Workflow structure
-<img width="316" height="738" alt="carp_snkm" src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408" />
+
+<p align="center">
+  <img
+    width="316"
+    height="738"
+    alt="Pipeline workflow"
+    src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408"
+  >
+</p>
+
+<p align="left">
+  <strong>Figure 3. Overview of the CARP-snakemake workflow showing the core rules corresponding to the steps in the original CARP pipeline</strong> Newly added optional visualization rules are not shown.
+</p>
+
 
 ### Process and tools
-| Step | Software | Purpose |
+| Step | Software/Scripts | Purpose |
 | --- | --- | ---|
-| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| split genome sequence files into smaller files |
+| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| Split genome sequence files into smaller files |
 | 01_krishna | [krishna](https://github.com/biogo/examples/tree/master/krishna)  </br> [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix) | Pairwise alignment |
 | 02_igor |  [igor](https://github.com/biogo/examples/tree/master/igor) | Repeat family groupings into json file |
 | 03_seqer | [seqer](https://github.com/biogo/examples/tree/master/igor/seqer) | Generate consensus sequences from genome intervals |
@@ -68,10 +108,20 @@ If you using CARP snakemake pipeline, please cite:
   - [260118_GB_TE.fa](esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile element or retroelement or polyprotein or retrovirus or (group-specific antigen gag) or polymerase (pol)" | efetch -format fasta > 260118_GB_TE.fa)
   - [Retrovirus datasets](https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=11632)
 
+## Requirement
+
+CARP-snakemake requires the following software on the host system:
+- Snakemake 9.27.0
+- Apptainer
+- SLURM workload manager (optional, required only for execution on an HPC cluster)
+
+All software dependencies required by the pipeline are included in the provided Apptainer image, `src/carp_open_source_v2.sif`. Root privileges are not required to run the prebuilt container.
+Pipeline parameters and the input sample prefix must be specified in `config.yaml`.
+
 ## Installation
-### For Linux server
+### For Linux users
 #### Setup conda environment
-Prerequesite: [conda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
+Prerequesite: [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
 $ conda create -n snkm9 -c bioconda snakemake=9.27.0
 $ conda activate snkm9
@@ -79,40 +129,63 @@ $ snakemake --version
 ```
 NB: `--version` should show 9.27.0, if snakemake version is not shown, please double check your conda installation and snakemake download
 
-#### Clone repo
+#### Clone CARP-snakemake
 ```bash
 $ cd <whereever/you/want/to/put>
 $ git clone https://github.com/Luan-Zhong/CARP-snakemake
 $ cd CARP-snakemake
 ```
-#### Pull container under the `CARP-snakemake/lib`
+#### Pull container under the `CARP-snakemake/src`
 
 ```bash
 $ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
-$ mv <myproject.sif> lib
+$ mv <myproject.sif> src
 ```
 
 #### Copy your input fasta data under `CARP-snakemake/data`
 
 ```bash
 $ cp <your/data/absolute/path> data
-# Make sure data successfully copies and in right size
-$ ls -lah data
 ```
 
-#### Dry run whole pipeline to make sure everything are prepared
+#### Download databases
+Make sure to move the downloaded databases to the lib directory and update the file names in the "# Reference libraries section" of `config.yaml`
+- RepBase FASTA format</br>
+  Download RepBase differnt releases from [Dfam Repbase Archive](https://dfam.org/repbase/releases).
+- Swissprot library </br>
+  Download uniprot protein data set from [UniProt download](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
+  ```bash
+  $ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+  ```
+- Download GB_TE dataset </br>
+  First install EDirect from EDirect download page [Entrez Direct: E-utilities on the Unix Command Line](https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Getting_Started). Then download the data:
+  ```bash
+  $ esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile gag) or polymerase (pol)" | efetch -format fasta > GB_TE.2022-07-14.fa
+  ```
+- Download retrovirus datasets </br>
+  Download retrovirus datasets from your browser: [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Viruses,taxid:11632)
+
+#### Quick start
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 -n --config preFix=<your_input_data_prefix>
+# Dry run 
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 -n
 ```
 
 ```bash
 $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 --config preFix=<your_input_data_prefix> -- output/test_input/02_igor/test_input_krishna.gff
 ```
-NB: If your input data is `test_input.fa`, `preFix=<your_input_data_prefix>` will be `preFix=test_input`
 
-#### Actual run
-```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=<your_input_data_prefix> --report output/<<your_input_data_prefix>_snkm_statistics_report.html
+#### Input data 
+Put your data under data folder, and modify `config.yaml` preFix according to your input data name
+```yaml
+# =========== Input genome name =================
+# Sample prefixes matching FASTA files under data/
+# Example
+# If your input file is data/test_input.fa
+# Your preFix will be
+
+preFix:
+  - test_input
 ```
 
 #### Where is the result?
