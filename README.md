@@ -2,9 +2,33 @@
 <img src="https://github.com/Luan-Zhong/CARP-snakemake/assets/37817639/55e9023b-45a3-487a-ac40-57cd4abb9ffa" width="200">
 <br/>
 
+## Overview
+- What is it and what does it do?
+
+  CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
+
+- Accepted input:
+  
+  Genome, cotigs in fasta format
+
+- Expected output:
+
+  Identify repeat consensus sequences from an input genome and classify them into repeat families
+
+### What's new?
+* One-step dependency installation with a apptainer container
+* Support for resuming from checkpoints
+* HPC/SLURM support with no root privileges required
+* Replace `censor` with `INS`, which does not require `AB-BLAST` or `WU-BLAST`
+* Add a summary table showing the coverage of different repeat elements based on the RepBase classification system
+* Add optional integrate visualization script to visualized found repeat consensus annotation
+* Add optional interactive html reports for easier viewing of results
+  <img width="1494" height="787" alt="CARP_snkm_report_screenshot" src="https://github.com/user-attachments/assets/6fa06a56-bffc-4215-bd4a-e78d400a724d" />
 
 
-CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
+
+
+
 
 ## Citation
 If you using CARP snakemake pipeline, please cite:
@@ -14,50 +38,32 @@ If you using CARP snakemake pipeline, please cite:
 > [[github page](https://github.com/carp-te/carp-documentation)]
 > [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
 
-
-## Pipeline overview
-### What's new?
-* One-step dependency installation with a Singularity container
-* Support for resuming from checkpoints
-* HPC/SLURM support with no root privileges required
-* Visualized html reports for easy interpretation, with interactive function
-<img width="1494" height="787" alt="CARP_snkm_report_screenshot" src="https://github.com/user-attachments/assets/6fa06a56-bffc-4215-bd4a-e78d400a724d" />
-
-
+## Workflow overview
 
 ### Workflow structure
 <img width="316" height="738" alt="carp_snkm" src="https://github.com/user-attachments/assets/d3c1c5ef-053b-46af-b77d-c8695ce96408" />
 
-### Minimal input
-- `fasta` file 
-
 ### Process and tools
+| Step | Software | Purpose |
+| --- | --- | ---|
+| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| split genome sequence files into smaller files |
+| 01_krishna | [krishna](https://github.com/biogo/examples/tree/master/krishna)  </br> [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix) | Pairwise alignment |
+| 02_igor |  [igor](https://github.com/biogo/examples/tree/master/igor) | Repeat family groupings into json file |
+| 03_seqer | [seqer](https://github.com/biogo/examples/tree/master/igor/seqer) | Generate consensus sequences from genome intervals |
+| 04_finalize_consensus | `bash cat` | Integrate consensus |
+| 05_repeats_in_repbase | `ins-fast` which is motified from [ins](https://github.com/kortschak/ins) | Consensus annotation with RepBase and our known repeat | 
+| 06_classify_consensus | ClassifyConsensusSequences_CARP_snkm.java | Generate annotation and grouping consensus into known, partial, and not known |
+| 07_filter_sequences | `blastx` `tblastx` | Search not known consensus against the protien databases (Swiss-Prot, Genbank-TE protein database, retrovirus) | 
+| 08_get_protein_info | GetProteins_CARP_snkm.java | Generate annotation for consensus based on the protein search result |
+| 09_check_ssr | `phobos` v3.3.12 | Identify simple sequence repeat | 
+| 10_identify_ssr | IdentifySSRs_CARP_snkm.java | Generate annotation for consensus based on the phobos search result |
+| 11_generate_annotated_repeat_lib | GenerateAnnotatedLibrary_CARP_snkm.java | Integrate all the annotation result |
+| (optional) 12_genome_annotation | `ins-fast` </br> ins_json_to_map.py </br> ins_map_to_tbl.py| Annotate whole genome and generate summary table |
+| (optional) 13_plot_ins_map | plot_ins_map.R | Generate consensus annotation map | 
+| (optional) 14_make_report | make_report.py | Generate an interactive html file |
 
 
-
-- Pairwise alignment
-  - [krishna](https://github.com/biogo/examples/tree/master/krishna)
-  - [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix)
-  - [bundle](https://github.com/biogo/examples/tree/master/bundle): split genome sequence files into smaller files
-- Report repeat feature family groupings in JSON format
-  - [igor](https://github.com/biogo/examples/tree/master/igor)
-- Generate consensus sequences from genome intervals
-  - [seqer](https://github.com/biogo/examples/tree/master/igor/seqer)
-- Annotate consensus sequences with repeat families
-  - [censor V4.2.29](https://www.girinst.org/downloads/software/censor/)
-  - [Repbase library 28.12 (vertebrate)](http://www.girinst.org/repbase/update/browse.php?type=All&format=FASTA&autonomous=on&nonautonomous=on&simple=on&division=Vertebrata&letter=A)
-  - [AB-BLAST](https://blast.advbiocomp.com/)
-- Classify consensus sequences
-  - [ClassifyConsensusSequences.java](https://github.com/carp-te/carp-documentation/blob/master/code/ClassifyConsensusSequences.java)
-- Filter sequences
-  [AB-BLAST](https://blast.advbiocomp.com/)
-  - Identify potential protein sequences
     - [uniprot protein dataset](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
-    
-  - Identify GB_TE sequences
-  - Identify potential retrovirus sequences
-
-  
   - [EDirect](https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Getting_Started)
   - [260118_GB_TE.fa](esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile element or retroelement or polyprotein or retrovirus or (group-specific antigen gag) or polymerase (pol)" | efetch -format fasta > 260118_GB_TE.fa)
   - [Retrovirus datasets](https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=11632)
