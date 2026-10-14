@@ -5,7 +5,7 @@
 ## Overview
 - What is it and what does it do?
 
-  CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP.
+  CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP
 
 - Accepted input:
   
@@ -56,19 +56,7 @@
   <strong>Figure 2. Example of consensus annotation map </strong>
 </p>
 
-
-## Citation
-If you using CARP snakemake pipeline, please cite:
-> **Superior *ab initio* identification, annotation and characterisation of TEs and segmental duplications from genome assemblies**<br/>
-> Lu Zeng, R. Daniel Kortschak, Joy M. Raison, Terry Bertozzi, David L. Adelson. *PLOS ONE*. 2018. <br/>
-> [doi:https://doi.org/10.1371/journal.pone.0193588](https://doi.org/10.1371/journal.pone.0193588) [[pdf](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0193588&type=printable)]
-> [[github page](https://github.com/carp-te/carp-documentation)]
-> [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
-
 ## Workflow overview
-
-### Workflow structure
-
 <p align="center">
   <img
     width="316"
@@ -83,25 +71,6 @@ If you using CARP snakemake pipeline, please cite:
 </p>
 
 
-### Process and tools
-| Step | Software/Scripts | Purpose |
-| --- | --- | ---|
-| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| Split genome sequence files into smaller files |
-| 01_krishna | [krishna](https://github.com/biogo/examples/tree/master/krishna)  </br> [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix) | Pairwise alignment |
-| 02_igor |  [igor](https://github.com/biogo/examples/tree/master/igor) | Repeat family groupings into json file |
-| 03_seqer | [seqer](https://github.com/biogo/examples/tree/master/igor/seqer) | Generate consensus sequences from genome intervals |
-| 04_finalize_consensus | `bash cat` | Integrate consensus |
-| 05_repeats_in_repbase | `ins-fast` which is motified from [ins](https://github.com/kortschak/ins) | Consensus annotation with RepBase and our known repeat | 
-| 06_classify_consensus | ClassifyConsensusSequences_CARP_snkm.java | Generate annotation and grouping consensus into known, partial, and not known |
-| 07_filter_sequences | `blastx` `tblastx` | Search not known consensus against the protien databases (Swiss-Prot, Genbank-TE protein database, retrovirus) | 
-| 08_get_protein_info | GetProteins_CARP_snkm.java | Generate annotation for consensus based on the protein search result |
-| 09_check_ssr | `phobos` v3.3.12 | Identify simple sequence repeat | 
-| 10_identify_ssr | IdentifySSRs_CARP_snkm.java | Generate annotation for consensus based on the phobos search result |
-| 11_generate_annotated_repeat_lib | GenerateAnnotatedLibrary_CARP_snkm.java | Integrate all the annotation result |
-| (optional) 12_genome_annotation | `ins-fast` </br> ins_json_to_map.py </br> ins_map_to_tbl.py| Annotate whole genome and generate summary table |
-| (optional) 13_plot_ins_map | plot_ins_map.R | Generate consensus annotation map | 
-| (optional) 14_make_report | make_report.py | Generate an interactive html file |
-
 
 
 ## Requirement
@@ -115,8 +84,7 @@ All software dependencies required by the pipeline are included in the provided 
 Pipeline parameters and the input sample prefix must be specified in `config.yaml`.
 
 ## Installation
-### For Linux users
-#### Setup conda environment
+### Setup conda environment
 Prerequesite: [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
 $ conda create -n snkm9 -c bioconda snakemake=9.27.0
@@ -125,26 +93,20 @@ $ snakemake --version
 ```
 NB: `--version` should show 9.27.0, if snakemake version is not shown, please double check your conda installation and snakemake download
 
-#### Clone CARP-snakemake
+### Clone CARP-snakemake
 ```bash
 $ cd <whereever/you/want/to/put>
 $ git clone https://github.com/Luan-Zhong/CARP-snakemake
 $ cd CARP-snakemake
 ```
-#### Pull container under the `CARP-snakemake/src`
+### Pull container under the `CARP-snakemake/src`
 
 ```bash
 $ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
 $ mv <myproject.sif> src
 ```
 
-#### Copy your input fasta data under `CARP-snakemake/data`
-
-```bash
-$ cp <your/data/absolute/path> data
-```
-
-#### Download databases
+### Download databases
 Make sure to move the downloaded databases to the lib directory and update the file names in the "# Reference libraries section" of `config.yaml`
 - RepBase FASTA format</br>
   Download RepBase differnt releases from [Dfam Repbase Archive](https://dfam.org/repbase/releases).
@@ -161,17 +123,20 @@ Make sure to move the downloaded databases to the lib directory and update the f
 - Download retrovirus datasets </br>
   Download retrovirus datasets from your browser: [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Viruses,taxid:11632)
 
-#### Quick start
+## Quick start
 ```bash
 # Dry run 
 $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 -n
 ```
 
+## Input data 
+
+Copy input fasta to data folder
+
 ```bash
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 --config preFix=<your_input_data_prefix> -- output/test_input/02_igor/test_input_krishna.gff
+$ cp <your/data/absolute/path> data
 ```
 
-#### Input data 
 Put your data under data folder, and modify `config.yaml` preFix according to your input data name
 ```yaml
 # =========== Input genome name =================
@@ -184,25 +149,28 @@ preFix:
   - test_input
 ```
 
-#### Where is the result?
+## Configuration
+The pipeline uses a `configure.yaml` file to specify input data, output directories, computational resources, and CARP parameters. Users can also enable or disable optional modules through this file.
+
+The pipeline has two rounds of searches for `ins`. Users can control whether soft masking is enabled in the first round by setting `repeats_in_repbase_first_softmask: false
+` or `annotate_genome_first_softmask: true` and  in `configure.yaml`.
+
+All file paths and parameter values should be checked before running the pipeline.
+
+## Usage
+Run whole pipeline
+```bash
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
+```
+
+Run certain step (Only run krishna as example)
+```bash
+$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 output/test_input/02_igor/test_input_krishna.gff
+```
+
+## Output
 Your result will be under `CARP-snakemake/output/<your_input_data_prefix>`
 
-#### Example: run with example dataset
-Dry run
-```bash
-$ cd CARP-snakemake
-$ cp <my/input_fasta/location>/test_input.fa data
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --cores 4 -n --config preFix=test_input 
-```
-You will expect
-```bash
-
-```
-Actual run
-
-```bash
-$ snakemake --snakefile Snakefile --use-singularity --cores 4 --printshellcmds --config preFix=test_input --report output/<your_input_data_prefix>/snkm_statistics_report.html
-```
 After process is completed, you will expect this output structure
 ```bash
 .
@@ -273,6 +241,29 @@ After process is completed, you will expect this output structure
         └── test_input_GenerateAnnotatedLibrary.log
 ```
 
+
+## Reproducibility
+
+### Tools and softwares
+| Step | Software/Scripts | Purpose |
+| --- | --- | ---|
+| 00_bundle | [bundle](https://github.com/biogo/examples/tree/master/bundle)| Split genome sequence files into smaller files |
+| 01_krishna | [krishna](https://github.com/biogo/examples/tree/master/krishna)  </br> [matrix](https://github.com/biogo/examples/tree/master/krishna/matrix) | Pairwise alignment |
+| 02_igor |  [igor](https://github.com/biogo/examples/tree/master/igor) | Repeat family groupings into json file |
+| 03_seqer | [seqer](https://github.com/biogo/examples/tree/master/igor/seqer) | Generate consensus sequences from genome intervals |
+| 04_finalize_consensus | `bash cat` | Integrate consensus |
+| 05_repeats_in_repbase | `ins-fast` which is motified from [ins](https://github.com/kortschak/ins) | Consensus annotation with RepBase and our known repeat | 
+| 06_classify_consensus | ClassifyConsensusSequences_CARP_snkm.java | Generate annotation and grouping consensus into known, partial, and not known |
+| 07_filter_sequences | ncbi-blast v2.15.0 `blastx` `tblastx` | Search not known consensus against the protien databases (Swiss-Prot, Genbank-TE protein database, retrovirus) | 
+| 08_get_protein_info | GetProteins_CARP_snkm.java | Generate annotation for consensus based on the protein search result |
+| 09_check_ssr | `phobos` v3.3.12 | Identify simple sequence repeat | 
+| 10_identify_ssr | IdentifySSRs_CARP_snkm.java | Generate annotation for consensus based on the phobos search result |
+| 11_generate_annotated_repeat_lib | GenerateAnnotatedLibrary_CARP_snkm.java | Integrate all the annotation result |
+| (optional) 12_genome_annotation | `ins-fast` </br> ins_json_to_map.py </br> ins_map_to_tbl.py| Annotate whole genome and generate summary table |
+| (optional) 13_plot_ins_map | plot_ins_map.R | Generate consensus annotation map | 
+| (optional) 14_make_report | make_report.py | Generate an interactive html file |
+
+
 ### For HPC slurm
 #### Setup conda environment in HPC home directory
 Prerequesite: conda is installed
@@ -304,25 +295,12 @@ $ cp <your/data/absolute/path> ./data
 $ ls -lah ./data
 ```
 #### Edit your slurm script
-```
-  
 
-
-## Time and Benchmarks
-
-Depends on the genome size and repetitive, large genome and repeatitive genome (e.g.:T2T) will take longer time.
-
-Data from CARP manual.
-Analysis runs on a machine with 512GB RAM, running Red Hat Linux.
-
-| Genome             | Krishna Threads | Genome DB Size | Krishna run time (hh:mm) | Igor run time (hh:mm) | Seqer run time (hh:mm) | Consensus sequences size | Censor first run time (hh:mm) | reportJ.sh (hh:mm) | phobos run time (hh:mm) |
-|--------------------|-----------------|----------------|--------------------------|-----------------------|------------------------|--------------------------|-------------------------------|---------------------|-------------------------|
-| Human              | 8               | 3.0G           | ~200                     | 128:30                | 2:23                   | 38M                      | 5:14                          | 19:30               | <00:10                  |
-| Bearded Dragon     | 8               | 1.8G           | ~23                      | 73:11                 | <4                     | 88M                      | 22:21                         | <178                | <00:10                  |
-| New Bearded Dragon | -               | -              | -                        | -                     | -                      | 88M                      | 7:13                          | 18:28               | <00:10                  |
-| Anolis             | 6               | 1.8G           | 76:52                    | 97:32                 | 2:40                   | 63M                      | 9:42                          | 78                  | <00:10                  |
-| Chicken            | 4               | 1017M          | 5                        | <4                    | <1                     | 18M                      | 3:01                          | <24                 | <00:10                  |
-| Opossum            | 8               | 3.5G           | ~83                      | 61:48                 | 4:52                   | 60M                      | 13:17                         | 80                  | <01:00                  |
-| Platypus           | 8               | 2.0G           | ~99                      | 191:34                | 10:16                  | 162M                     | 17:34                         | 115                 | <01:00                  |
-| Echidna            | 8               | 1.9G           | 360                      | 12:43                 | 9:02                   | 59M                      | 18:40                         | 105                 | 01:54                   |
+## Citation
+If you using CARP snakemake pipeline, please cite:
+> **Superior *ab initio* identification, annotation and characterisation of TEs and segmental duplications from genome assemblies**<br/>
+> Lu Zeng, R. Daniel Kortschak, Joy M. Raison, Terry Bertozzi, David L. Adelson. *PLOS ONE*. 2018. <br/>
+> [doi:https://doi.org/10.1371/journal.pone.0193588](https://doi.org/10.1371/journal.pone.0193588) [[pdf](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0193588&type=printable)]
+> [[github page](https://github.com/carp-te/carp-documentation)]
+> [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
 
