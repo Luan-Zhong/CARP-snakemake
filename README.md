@@ -208,7 +208,7 @@ All file paths and parameter values should be checked before running the pipelin
   ```
 * Usage 4: Rerun from incomplete
   ```bash
-  
+  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 --rerun-incomplete
   ``` 
 
 ## Output
