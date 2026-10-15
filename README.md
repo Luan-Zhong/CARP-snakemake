@@ -158,15 +158,57 @@ The pipeline has two rounds of searches for `ins`. Users can control whether sof
 All file paths and parameter values should be checked before running the pipeline.
 
 ## Usage
-Run whole pipeline
-```bash
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
-```
+* Usage 1: Run the core rules corresponding to the steps in the original CARP pipeline
+  ```bash
+  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
+  ```
 
-Run certain step (Only run krishna as example)
-```bash
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 output/test_input/02_igor/test_input_krishna.gff
-```
+* Usage 2: Run whole piepline with the genome annotation, and visualization steps
+  - You can check available consensus name by
+    ```bash
+    $ awk '/^>/{sub(/^>/, ""); print $1}' output/test_input/04_finalize_consensus/test_input_ConsensusSequences.fa
+    ```
+  - Edit the `config.yaml` file. To generate PNG files only for selected consensus sequences, specify their consensus IDs in the configuration file
+    ```yaml
+    ####################
+    # Optional outputs #
+    ####################
+    # ========= Enable rule annotate_genome =======================
+    # Enable rule annotate_genome
+    annotate_genome: true
+    # Soft-mask matches before searching the Denovo TE library
+    annotate_genome_first_softmask: false
+    # ========= Enable rule plot_ins_map ==========================
+    # plot_ins_map: false
+    # Keep an empty list when plot_ins_map is false
+    # plot_consensus_ids: []
+    # If you want to generate annotation png files for selected consensu
+    # First enable plot_ins_map
+    plot_ins_map: true
+    # Then, list the consensus you select
+    # NB: Consensus must exactly match the first field of FASTA headers
+    plot_consensus_ids:
+      - family000001_consensus
+      - family000007_consensus
+      - family000025_consensus
+    # ========= Enable rule make_report ===========================
+    # Generate the final interactive html report
+    make_report: true
+    ```
+  
+  - Execute snakemake piepline
+    ```bash
+    $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
+    ```
+
+* Usage 3: Run certain step (Only run krishna as example)
+  ```bash
+  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 output/test_input/02_igor/test_input_krishna.gff
+  ```
+* Usage 4: Rerun from incomplete
+  ```bash
+  
+  ``` 
 
 ## Output
 Your result will be under `CARP-snakemake/output/<your_input_data_prefix>`
