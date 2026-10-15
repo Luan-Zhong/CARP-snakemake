@@ -311,7 +311,7 @@ After process is completed, you will expect this output structure
 #### Setup conda environment in HPC home directory
 Prerequesite: conda is installed
 ```bash
-conda create -n snkm9 -c bioconda snakemake=9.27.0
+conda create -n snkm9 -c conda-forge -c bioconda --strict-channel-priority snakemake=9.27.0
 conda activate snkm9
 snakemake --version
 ```
