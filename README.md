@@ -87,23 +87,23 @@ Pipeline parameters and the input sample prefix must be specified in `config.yam
 ### Setup conda environment
 Prerequesite: [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
-$ conda create -n snkm9 -c bioconda snakemake=9.27.0
-$ conda activate snkm9
-$ snakemake --version
+conda create -n snkm9 -c bioconda snakemake=9.27.0
+conda activate snkm9
+snakemake --version
 ```
 NB: `--version` should show 9.27.0, if snakemake version is not shown, please double check your conda installation and snakemake download
 
 ### Clone CARP-snakemake
 ```bash
-$ cd <whereever/you/want/to/put>
-$ git clone https://github.com/Luan-Zhong/CARP-snakemake
-$ cd CARP-snakemake
+cd <whereever/you/want/to/put>
+git clone https://github.com/Luan-Zhong/CARP-snakemake
+cd CARP-snakemake
 ```
 ### Pull container under the `CARP-snakemake/src`
 
 ```bash
-$ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
-$ mv <myproject.sif> src
+apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
+mv <myproject.sif> src
 ```
 
 ### Download databases
@@ -113,12 +113,12 @@ Make sure to move the downloaded databases to the lib directory and update the f
 - Swissprot library </br>
   Download uniprot protein data set from [UniProt download](ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz)
   ```bash
-  $ wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+  wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
   ```
 - Download GB_TE dataset </br>
   First install EDirect from EDirect download page [Entrez Direct: E-utilities on the Unix Command Line](https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Getting_Started). Then download the data:
   ```bash
-  $ esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile gag) or polymerase (pol)" | efetch -format fasta > GB_TE.2022-07-14.fa
+  esearch -db protein -query "reverse transcriptase or transposon or repetitive element or RNA-directed DNA polymerase or pol protein or non-LTR retrotransposon or mobile gag) or polymerase (pol)" | efetch -format fasta > GB_TE.2022-07-14.fa
   ```
 - Download retrovirus datasets </br>
   Download retrovirus datasets from your browser: [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Viruses,taxid:11632)
@@ -126,8 +126,8 @@ Make sure to move the downloaded databases to the lib directory and update the f
 ## Quick start
 ```bash
 # Dry run
-$ conda activate snkm9
-$ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 -n
+conda activate snkm9
+snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 -n
 ```
 
 ## Input data 
@@ -135,7 +135,7 @@ $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfil
 Copy input fasta to data folder
 
 ```bash
-$ cp <your/data/absolute/path> data
+cp <your/data/absolute/path> data
 ```
 
 Put your data under data folder, and modify `config.yaml` preFix according to your input data name
@@ -161,13 +161,13 @@ All file paths and parameter values should be checked before running the pipelin
 ## Usage
 * Usage 1: Run the core rules corresponding to the steps in the original CARP pipeline
   ```bash
-  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
+  snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
   ```
 
 * Usage 2: Run whole piepline with the genome annotation, and visualization steps
   - You can check available consensus name by
     ```bash
-    $ awk '/^>/{sub(/^>/, ""); print $1}' output/test_input/04_finalize_consensus/test_input_ConsensusSequences.fa
+    awk '/^>/{sub(/^>/, ""); print $1}' output/test_input/04_finalize_consensus/test_input_ConsensusSequences.fa
     ```
   - Edit the `config.yaml` file. To generate PNG files only for selected consensus sequences, specify their consensus IDs in the configuration file
     ```yaml
@@ -199,16 +199,16 @@ All file paths and parameter values should be checked before running the pipelin
   
   - Execute snakemake piepline
     ```bash
-    $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
+    snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4
     ```
 
 * Usage 3: Run certain step (Only run krishna as example)
   ```bash
-  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 output/test_input/02_igor/test_input_krishna.gff
+  snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 output/test_input/02_igor/test_input_krishna.gff
   ```
 * Usage 4: Rerun from incomplete
   ```bash
-  $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 --rerun-incomplete
+  snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 --rerun-incomplete
   ``` 
 
 ## Output
@@ -311,31 +311,31 @@ After process is completed, you will expect this output structure
 #### Setup conda environment in HPC home directory
 Prerequesite: conda is installed
 ```bash
-$ conda create -n snkm9 -c bioconda snakemake=9.27.0
-$ conda activate snkm9
-$ snakemake --version
+conda create -n snkm9 -c bioconda snakemake=9.27.0
+conda activate snkm9
+snakemake --version
 ```
 NB: If snakemake version is not shown, please double check your conda installation and snakemake download
 
 #### Clone repo
 ```bash
-$ cd <whereever/you/want/to/put>
-$ git clone https://github.com/Luan-Zhong/CARP-snakemake
-$ cd CARP-snakemake
+cd <whereever/you/want/to/put>
+git clone https://github.com/Luan-Zhong/CARP-snakemake
+cd CARP-snakemake
 ```
 #### Pull container under the `CARP-snakemake/lib`
 
 ```bash
-$ apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
-$ mv <myproject.sif> lib
+apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
+mv <myproject.sif> lib
 ```
 
 #### Copy your input fasta data under `CARP-snakemake/data`
 
 ```bash
-$ cp <your/data/absolute/path> ./data
+cp <your/data/absolute/path> ./data
 # Make sure data successfully copies and in right size
-$ ls -lah ./data
+ls -lah ./data
 ```
 #### Edit your slurm script
 
