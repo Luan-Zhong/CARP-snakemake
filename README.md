@@ -125,7 +125,8 @@ Make sure to move the downloaded databases to the lib directory and update the f
 
 ## Quick start
 ```bash
-# Dry run 
+# Dry run
+$ conda activate snkm9
 $ snakemake --snakefile Snakefile --use-singularity --printshellcmds --configfile config.yaml --cores 4 -n
 ```
 
