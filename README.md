@@ -335,7 +335,12 @@ mv <myproject.sif> src
 ```bash
 cp <your/data/absolute/path> ./data
 ```
-#### Edit your slurm script
+#### Setup `lib` directory
+#### Edit `swimming_carp.sl` to match your hpc account and resource requirements
+#### Submit your job
+```bash
+sbatch swimming_carp.sl
+```
 
 ## Citation
 If you using CARP snakemake pipeline, please cite:
