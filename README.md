@@ -347,3 +347,9 @@ If you using CARP snakemake pipeline, please cite:
 > [[github page](https://github.com/carp-te/carp-documentation)]
 > [[manual (Updated in 2018-10-26)](https://github.com/carp-te/carp-documentation/blob/master/CARP.pdf)]
 
+Please also cite Phobos when using this software. This software is free for academic use only:
+> **Genome-wide analysis of tandem repeats in Daphnia pulex - a comparative approach**<br/>
+> Christoph Mayer, Florian Leese & Ralph Tollrian. *BMC Genomics*. 2010. <br/>
+> [https://doi.org/10.1186/1471-2164-11-277](https://doi.org/10.1186/1471-2164-11-277)
+> [[webpage](https://www.ruhr-uni-bochum.de/ecoevo/cm/cm_phobos.htm)]
+
