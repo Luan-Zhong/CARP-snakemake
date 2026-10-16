@@ -102,7 +102,7 @@ cd CARP-snakemake
 ### Pull container under the `CARP-snakemake/src`
 
 ```bash
-apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
+docker pull ghcr.io/luan-zhong/carp_snkm_sif_v2:latest
 mv <myproject.sif> src
 ```
 
@@ -326,16 +326,14 @@ cd CARP-snakemake
 #### Pull container under the `CARP-snakemake/lib`
 
 ```bash
-apptainer pull <myproject.sif> <docker://ghcr.io/USERNAME/myproject:1.0>
-mv <myproject.sif> lib
+docker pull ghcr.io/luan-zhong/carp_snkm_sif_v2:latest
+mv <myproject.sif> src
 ```
 
 #### Copy your input fasta data under `CARP-snakemake/data`
 
 ```bash
 cp <your/data/absolute/path> ./data
-# Make sure data successfully copies and in right size
-ls -lah ./data
 ```
 #### Edit your slurm script
 
