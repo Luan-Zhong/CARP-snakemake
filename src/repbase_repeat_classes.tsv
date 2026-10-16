@@ -1,0 +1,108 @@
+Repeat_label	Parent	Full_path
+Transposable Element	-	Transposable Element
+DNA transposon	Transposable Element	Transposable Element > DNA transposon
+Mariner/Tc1	DNA transposon	Transposable Element > DNA transposon > Mariner/Tc1
+hAT	DNA transposon	Transposable Element > DNA transposon > hAT
+MuDR	DNA transposon	Transposable Element > DNA transposon > MuDR
+EnSpm/CACTA	DNA transposon	Transposable Element > DNA transposon > EnSpm/CACTA
+piggyBac	DNA transposon	Transposable Element > DNA transposon > piggyBac
+P	DNA transposon	Transposable Element > DNA transposon > P
+Merlin	DNA transposon	Transposable Element > DNA transposon > Merlin
+Harbinger	DNA transposon	Transposable Element > DNA transposon > Harbinger
+Transib	DNA transposon	Transposable Element > DNA transposon > Transib
+Novosib	DNA transposon	Transposable Element > DNA transposon > Novosib
+Helitron	DNA transposon	Transposable Element > DNA transposon > Helitron
+Polinton	DNA transposon	Transposable Element > DNA transposon > Polinton
+Kolobok	DNA transposon	Transposable Element > DNA transposon > Kolobok
+ISL2EU	DNA transposon	Transposable Element > DNA transposon > ISL2EU
+Crypton	DNA transposon	Transposable Element > DNA transposon > Crypton
+CryptonA	Crypton	Transposable Element > DNA transposon > Crypton > CryptonA
+CryptonF	Crypton	Transposable Element > DNA transposon > Crypton > CryptonF
+CryptonI	Crypton	Transposable Element > DNA transposon > Crypton > CryptonI
+CryptonS	Crypton	Transposable Element > DNA transposon > Crypton > CryptonS
+CryptonV	Crypton	Transposable Element > DNA transposon > Crypton > CryptonV
+Sola	DNA transposon	Transposable Element > DNA transposon > Sola
+Sola1	Sola	Transposable Element > DNA transposon > Sola > Sola1
+Sola2	Sola	Transposable Element > DNA transposon > Sola > Sola2
+Sola3	Sola	Transposable Element > DNA transposon > Sola > Sola3
+Zator	DNA transposon	Transposable Element > DNA transposon > Zator
+Ginger1	DNA transposon	Transposable Element > DNA transposon > Ginger1
+Ginger2/TDD	DNA transposon	Transposable Element > DNA transposon > Ginger2/TDD
+Academ	DNA transposon	Transposable Element > DNA transposon > Academ
+Zisupton	DNA transposon	Transposable Element > DNA transposon > Zisupton
+IS3EU	DNA transposon	Transposable Element > DNA transposon > IS3EU
+Dada	DNA transposon	Transposable Element > DNA transposon > Dada
+IS481EU	DNA transposon	Transposable Element > DNA transposon > IS481EU
+Replitron	DNA transposon	Transposable Element > DNA transposon > Replitron
+LTR Retrotransposon	Transposable Element	Transposable Element > LTR Retrotransposon
+Gypsy	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > Gypsy
+Copia	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > Copia
+BEL	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > BEL
+DIRS	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > DIRS
+Troyka	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > Troyka
+Lodin	LTR Retrotransposon	Transposable Element > LTR Retrotransposon > Lodin
+Endogenous Retrovirus	Transposable Element	Transposable Element > Endogenous Retrovirus
+ERV1	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > ERV1
+ERV2	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > ERV2
+ERV3	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > ERV3
+Lentivirus	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > Lentivirus
+ERV4	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > ERV4
+Lokiretrovirus	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > Lokiretrovirus
+Spumaretrovirus	Endogenous Retrovirus	Transposable Element > Endogenous Retrovirus > Spumaretrovirus
+Non-LTR Retrotransposon	Transposable Element	Transposable Element > Non-LTR Retrotransposon
+SINE	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > SINE
+SINE1/7SL	SINE	Transposable Element > Non-LTR Retrotransposon > SINE > SINE1/7SL
+SINE2/tRNA	SINE	Transposable Element > Non-LTR Retrotransposon > SINE > SINE2/tRNA
+SINE3/5S	SINE	Transposable Element > Non-LTR Retrotransposon > SINE > SINE3/5S
+SINE4	SINE	Transposable Element > Non-LTR Retrotransposon > SINE > SINE4
+SINEU/snRNA	SINE	Transposable Element > Non-LTR Retrotransposon > SINE > SINEU/snRNA
+CRE	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > CRE
+NeSL	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > NeSL
+R4	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > R4
+R2	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > R2
+L1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > L1
+RTE	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > RTE
+I	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > I
+Jockey	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Jockey
+CR1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > CR1
+Rex1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Rex1
+RandI	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > RandI
+Penelope	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Penelope
+Penelope/Poseidon	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Penelope/Poseidon
+Neptune	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Neptune
+Nematis	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Nematis
+Athena	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Athena
+Coprina	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Coprina
+Hydra	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Hydra
+Naiad/Chlamys	Penelope	Transposable Element > Non-LTR Retrotransposon > Penelope > Naiad/Chlamys
+Tx1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Tx1
+RTEX	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > RTEX
+Crack	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Crack
+Nimb	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Nimb
+Proto1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Proto1
+Proto2	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Proto2
+RTETP	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > RTETP
+Hero	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Hero
+L2	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > L2
+Tad1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Tad1
+Loa	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Loa
+Ingi	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Ingi
+Outcast	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Outcast
+R1	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > R1
+Daphne	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Daphne
+L2A	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > L2A
+L2B	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > L2B
+Ambal	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Ambal
+Vingi	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Vingi
+Kiri	Non-LTR Retrotransposon	Transposable Element > Non-LTR Retrotransposon > Kiri
+Simple Repeat	-	Simple Repeat
+Satellite	Simple Repeat	Simple Repeat > Satellite
+SAT	Satellite	Simple Repeat > Satellite > SAT
+MSAT	Satellite	Simple Repeat > Satellite > MSAT
+Multicopy gene	-	Multicopy gene
+rRNA	Multicopy gene	Multicopy gene > rRNA
+tRNA	Multicopy gene	Multicopy gene > tRNA
+snRNA	Multicopy gene	Multicopy gene > snRNA
+Integrated Virus	-	Integrated Virus
+DNA Virus	Integrated Virus	Integrated Virus > DNA Virus
+Caulimoviridae	Integrated Virus	Integrated Virus > Caulimoviridae
