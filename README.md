@@ -103,7 +103,7 @@ cd CARP-snakemake
 
 ```bash
 docker pull ghcr.io/luan-zhong/carp_snkm_sif_v2:latest
-mv <myproject.sif> src
+mv carp_snkm_sif_v2.sif src
 ```
 
 ### Download databases
