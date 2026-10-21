@@ -87,7 +87,7 @@ Pipeline parameters and the input sample prefix must be specified in `config.yam
 ### Setup conda environment
 Prerequesite: [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install/linux-install) and [apptainer](https://apptainer.org/docs/admin/main/installation.html) are installed
 ```bash
-conda create -n snkm9 -c bioconda snakemake=9.27.0
+conda create -n snkm9 -c bioconda -c conda-forge snakemake=9.27.0
 conda activate snkm9
 snakemake --version
 ```
