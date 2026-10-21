@@ -5,7 +5,7 @@
 ## Overview
 - What is it and what does it do?
 
-  CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP
+  CARP (Comprehensive *ab initio* Repeat Pipeline) is a pipeline for repeat detection and annotation. This project aims to produce a reliable, scalable, and reproducible workflow as a series of chained rules for CARP. This version provides a container that eliminates the need for complicated software installations and replaces some of the original tools with alternatives developed by our lab. However, if you prefer to use the same version as described in the paper, please visit: https://github.com/Luan-Zhong/carp_snkm_with_censor_wublast_repeatmasker/tree/main
 
 - Accepted input:
   
